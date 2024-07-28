@@ -1,0 +1,56 @@
+# DristChat config
+
+permission_global: "dchat.feature.messages" # checked before displaying any message
+permission_global_prefix: "dchat.feature.prefix" # checked before displaying DM+ prefixes
+permission_global_suffix: "dchat.feature.suffix" # checked before displaying DM+ suffixes
+
+message_format:
+  message: "%prefix%%sender%%suffix%: %message%"
+# permission for translation - dchat.translation.<language>
+
+private_messages:
+  send: "(%p1%%sender%%s1% -> %p2%%receiver%%s2%): %message%"
+  receive: "(%sender% -> %receiver%): %message%"
+  sound: "ENTITY_CHICKEN_EGG"
+
+player_first_joined:
+  message: "[++] %player% has joined the game for the first time!"
+  sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+  permission: "dchat.feature.joinleave"
+player_joined:
+  message: "[+] %prefix%%player%%suffix%"
+  sound: "UI_BUTTON_CLICK"
+  permission: "dchat.feature.joinleave"
+player_left:
+  message: "[-] %prefix%%player%%suffix%"
+  sound: "UI_BUTTON_CLICK"
+  permission: "dchat.feature.joinleave"
+
+title_on_join:
+  header: # supports animation
+    - "&2W&aelcome!"
+    - "&aW&2e&alcome!"
+    - "&aWe&2l&acome!"
+    - "&aWel&2c&aome!"
+    - "&aWelc&2o&ame!"
+    - "&aWelco&2m&ae!"
+    - "&aWelcom&2e&a!"
+    - "&aWelcome&2!"
+  footer: # supports animation
+    - "DristMine classic"
+  permission: "dchat.feature.title"
+actionbar_on_join:
+  text: # supports animation
+    - "Welcome to DristMine!"
+  permission: "dchat.feature.actionbar"
+sound_on_join:
+  sound: "ENTITY_PLAYER_LEVELUP"
+  permission: "dchat.feature.joinsound"
+
+advancements:
+  message: "%advancement%"
+  permission: "dchat.feature.advancements"
+
+deaths:
+  message: "%death_message%"
+  permission: "dchat.feature.deaths"
