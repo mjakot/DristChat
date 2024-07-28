@@ -13,11 +13,16 @@ public class DristChat extends JavaPlugin {
 
 		try {
 			luckPerms = LuckPermsProvider.get();
-		} catch (IllegalStateException e) {
+		}
+		catch (IllegalStateException e) {
 			getLogger().severe("LuckPerms not found! Disabling plugin.");
+
 			getServer().getPluginManager().disablePlugin(this);
+
 			return;
 		}
+
+		getServer().getPluginManager().registerEvents(new MessageListener(), this);
 	}
 
 	@Override
