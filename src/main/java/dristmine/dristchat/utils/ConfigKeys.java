@@ -34,6 +34,9 @@ public class ConfigKeys {
 	public static final ConfigKeys GLOBAL_PERMISSION_PREFIX;
 	public static final ConfigKeys GLOBAL_PERMISSION_SUFFIX;
 	public static final ConfigKeys GLOBAL_PERMISSION_SOUND;
+	public static final ConfigKeys GLOBAL_MESSAGE_SOUND;
+	public static final ConfigKeys GLOBAL_SOUND_VOLUME;
+	public static final ConfigKeys GLOBAL_SOUND_PITCH;
 	public static final ConfigKeys MESSAGE_FORMAT;
 	public static final ConfigKeys PRIVATE_MESSAGE;
 	public static final ConfigKeys PLAYER_FIRST_JOINED;
@@ -58,7 +61,10 @@ public class ConfigKeys {
 		GLOBAL_PERMISSION_PREFIX = new ConfigKeys("permission_global_prefix");
 		GLOBAL_PERMISSION_SUFFIX = new ConfigKeys("permission_global_suffix");
 		GLOBAL_PERMISSION_SOUND = new ConfigKeys("permission_global_sound");
-		MESSAGE_FORMAT = new ConfigKeys("message_format", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND });
+		GLOBAL_MESSAGE_SOUND = new ConfigKeys("global_message_sound");
+		GLOBAL_SOUND_VOLUME = new ConfigKeys("global_sound_volume");
+		GLOBAL_SOUND_PITCH = new ConfigKeys("global_sound_pitch");
+		MESSAGE_FORMAT = new ConfigKeys("message_format", new ConfigKeys[] { ConfigKeys.MESSAGE });
 		PRIVATE_MESSAGE = new ConfigKeys("private_messages", new ConfigKeys[] { ConfigKeys.SEND, ConfigKeys.RECEIVE, ConfigKeys.SOUND });
 		PLAYER_FIRST_JOINED = new ConfigKeys("player_first_joined", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND, ConfigKeys.PERMISSION });
 		PLAYER_JOINED = new ConfigKeys("player_joined", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND, ConfigKeys.PERMISSION });
@@ -69,8 +75,6 @@ public class ConfigKeys {
 		ADVANCEMENTS = new ConfigKeys("advancements", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.PERMISSION });
 		DEATHS = new ConfigKeys("deaths", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.PERMISSION });
 	}
-
-
 
 	public String getKey() {
 		return key;

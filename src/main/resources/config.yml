@@ -3,11 +3,13 @@
 permission_global: "dchat.feature.messages" # checked before displaying any message
 permission_global_prefix: "dchat.feature.prefix" # checked before displaying DM+ prefixes
 permission_global_suffix: "dchat.feature.suffix" # checked before displaying DM+ suffixes
-permission_global_sound: "dchat.feature.sound"
+permission_global_sound: "dchat.feature.sound" # sound on global messages
+global_message_sound: "UI_BUTTON_CLICK" # global messages sound
+global_sound_volume: 2.0 # global messages sound volume
+global_sound_pitch: 1.0 # global messages sound pitch
 
 message_format:
   message: "%prefix%%sender%%suffix%: %message%"
-  sound: "UI_BUTTON_CLICK"
 # permission for translation - dchat.translation.<language>
 
 private_messages:
