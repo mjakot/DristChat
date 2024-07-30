@@ -1,7 +1,6 @@
 package dristmine.dristchat.messages;
 
 import dristmine.dristchat.utils.ConfigKeys;
-import dristmine.dristchat.utils.ConfigManager;
 import dristmine.dristchat.utils.Utils;
 
 import net.kyori.adventure.audience.Audience;
@@ -21,7 +20,10 @@ public class MessageUtils {
 	private static final String PARSED_SUFFIX_PLACEHOLDER = "%dc_suffix_parsed%";
 
 	private static final String PUBLIC_MESSAGE_DELIMITER = ": ";
-	private static final String PRIVATE_MESSAGE_DELIMITER = " whispered to you" + PUBLIC_MESSAGE_DELIMITER;
+	private static final String PRONOUN = "you";
+	private static final String ACTION = " whispered to ";
+	private static final String PRIVATE_MESSAGE_DELIMITER = ACTION + PRONOUN  + PUBLIC_MESSAGE_DELIMITER;
+	private static final String PRIVATE_MESSAGE_PREFIX = PRONOUN + ACTION;
 
 	public enum EnabledFeatures {
 		PREFIX_AND_SUFFIX,
@@ -70,6 +72,20 @@ public class MessageUtils {
 				true,
 				NamedTextColor.GRAY
 		));
+	}
+
+	public static void privateMessageSent(EnabledFeatures targetFeatures, Player sender, Player viewer, Component message) {
+		sender.sendMessage(Component.text()
+				.color(NamedTextColor.GRAY)
+				.decoration(TextDecoration.ITALIC, true)
+				.content(PRIVATE_MESSAGE_PREFIX)
+				.append(Component.text(testPrefix(targetFeatures)))
+				.append(Component.text(viewer.getName()))
+				.append(Component.text(testSuffix(targetFeatures)))
+				.append(Component.text(PUBLIC_MESSAGE_DELIMITER))
+				.append(message)
+				.build()
+		);
 	}
 
 	public static void sendMessages(Map<MessageUtils.EnabledFeatures, List<Player>> viewers, Player sender, Component message) {
@@ -123,19 +139,25 @@ public class MessageUtils {
 		return Component.text()
 				.color(includeColor ? colorType : NamedTextColor.WHITE)                // conditional color assignment
 				.decoration(decorationType, includeDecoration)                         // conditional decoration assignment
-				.content(                                                              // conditional prefix placeholder assignment
-						targetFeatures == EnabledFeatures.PREFIX_AND_SUFFIX ||
-						targetFeatures == MessageUtils.EnabledFeatures.PREFIX ?
-								PARSED_PREFIX_PLACEHOLDER : Utils.EMPTY_STRING
-				)
+				.content(testPrefix(targetFeatures))
 				.append(Component.text(sender.getName()))                              // append sender name
-				.append(Component.text(                                                // conditional suffix placeholder assignment
-						targetFeatures == EnabledFeatures.PREFIX_AND_SUFFIX ||
-						targetFeatures == EnabledFeatures.SUFFIX ?
-								PARSED_SUFFIX_PLACEHOLDER : Utils.EMPTY_STRING
-				))
+				.append(Component.text(testSuffix(targetFeatures)))
 				.append(Component.text(delimiter))                                     // append delimiter
 				.append(originalMessage)                                               // append message
 				.build();                                                              // build component
+	}
+
+	private static String testPrefix(EnabledFeatures enabledFeatures) {
+		if (enabledFeatures == EnabledFeatures.PREFIX_AND_SUFFIX || enabledFeatures == EnabledFeatures.PREFIX)
+			return PARSED_PREFIX_PLACEHOLDER;
+
+		return Utils.EMPTY_STRING;
+	}
+
+	private static String testSuffix(EnabledFeatures enabledFeatures) {
+		if (enabledFeatures == EnabledFeatures.PREFIX_AND_SUFFIX || enabledFeatures == EnabledFeatures.SUFFIX)
+			return PARSED_SUFFIX_PLACEHOLDER;
+
+		return Utils.EMPTY_STRING;
 	}
 }

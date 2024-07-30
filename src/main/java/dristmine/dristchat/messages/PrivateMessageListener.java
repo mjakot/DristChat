@@ -20,11 +20,29 @@ public class PrivateMessageListener implements Listener {
 			this.command = command;
 		}
 
-		@Override
-		public String toString() {
+		public String getValue() {
 			return command;
 		}
 	}
+
+	private enum CommandComponents {
+		RECEIVER(1),
+		MESSAGE(2);
+
+		private final int component;
+
+		CommandComponents(int component) {
+			this.component = component;
+		}
+
+		public int getValue() {
+			return component;
+		}
+	}
+
+	private static final int COMMAND_START_POSITION = 1;
+	private static final String ARGS_SEPARATOR = " ";
+	private static final String INVALID_PLAYER_ERROR = "Invalid player";
 
 	@EventHandler
 	public void onPrivateMessage(PlayerCommandPreprocessEvent event) {
@@ -32,22 +50,26 @@ public class PrivateMessageListener implements Listener {
 
 		if (
 			Arrays.stream(PrivateMessageCommands.values())
-					.map(PrivateMessageCommands::toString)
-					.noneMatch(x -> command.startsWith(x, 1))
+					.map(PrivateMessageCommands::getValue)
+					.noneMatch(x -> command.startsWith(x, COMMAND_START_POSITION))
 		) {
 			return;
 		}
 
 		event.setCancelled(true);
 
-		Player viewer = Bukkit.getPlayer(command.split(" ")[1]);
+		String[] decomposedCommand = command.split(ARGS_SEPARATOR);
+
+		Player viewer = Bukkit.getPlayer(decomposedCommand[CommandComponents.RECEIVER.getValue()]);
+		Component originalMessage = Component.text(decomposedCommand[CommandComponents.MESSAGE.getValue()]);
 
 		if (viewer == null) {
-			event.getPlayer().sendMessage("Invalid user");
+			event.getPlayer().sendMessage(INVALID_PLAYER_ERROR);
 
 			return;
 		}
 
-		MessageUtils.sendPrivateMessage(MessageUtils.categorizePlayer(viewer), viewer, event.getPlayer(), Component.text(command.split(" ")[2]));
+		MessageUtils.sendPrivateMessage(MessageUtils.categorizePlayer(viewer), viewer, event.getPlayer(), originalMessage);
+		MessageUtils.privateMessageSent(MessageUtils.categorizePlayer(event.getPlayer()), event.getPlayer(), viewer, originalMessage);
 	}
 }
