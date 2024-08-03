@@ -29,6 +29,9 @@ public class DristChat extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(new MessageListener(), this);
 		getServer().getPluginManager().registerEvents(new PrivateMessageListener(), this);
+		getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+		getServer().getPluginManager().registerEvents(new OnDeath(), this);
+		getServer().getPluginManager().registerEvents(new OnAdvancementDone(), this);
 
 		getLogger().info(Utils.EMPTY_STRING);
 		getLogger().info("  + ----------+ ");

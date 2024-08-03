@@ -3,6 +3,8 @@ package dristmine.dristchat.utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+
 public class ConfigManager {
 	public static final String CONFIG_DELIMITER = ".";
 
@@ -36,6 +38,13 @@ public class ConfigManager {
 	}
 	public final String getString(ConfigKeys key) {
 		return getString(key.getKey());
+	}
+
+	public final List<String> getStringList(String key) {
+		return configuration.getStringList(key);
+	}
+	public final List<String> getStringList(ConfigKeys section, ConfigKeys key) {
+		return getStringList(section.getKey(key));
 	}
 
 	public double getFloatingPoint(String key) {

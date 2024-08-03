@@ -21,8 +21,6 @@ public class MessageListener implements Listener {
 
 	private static final ConfigManager CONFIG = ConfigManager.getInstance();
 
-	public MessageListener() {}
-
 	@EventHandler
 	public void onMessage(AsyncChatEvent event) {
 		event.setCancelled(true);

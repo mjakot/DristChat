@@ -11,6 +11,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -57,35 +58,25 @@ public class MessageUtils {
 		return players.stream().collect(Collectors.groupingBy(MessageUtils::categorizePlayer));
 	}
 
-	public static void sendPublicMessage(EnabledFeatures viewerEnabledFeatures, Player viewer, Player sender, Component message) {
-		viewer.sendMessage(createMessageComponent(viewerEnabledFeatures, sender, message));
-	}
-
 	public static void sendPrivateMessage(EnabledFeatures viewerEnabledFeatures, Player viewer, Player sender, Component message) {
 		viewer.sendMessage(createMessageComponent(
 				viewerEnabledFeatures,
 				sender,
 				message,
 				PRIVATE_MESSAGE_DELIMITER,
-				true,
 				TextDecoration.ITALIC,
-				true,
 				NamedTextColor.GRAY
 		));
 	}
 
 	public static void privateMessageSent(EnabledFeatures targetFeatures, Player sender, Player viewer, Component message) {
-		sender.sendMessage(Component.text()
-				.color(NamedTextColor.GRAY)
-				.decoration(TextDecoration.ITALIC, true)
-				.content(PRIVATE_MESSAGE_PREFIX)
-				.append(Component.text(testPrefix(targetFeatures)))
-				.append(Component.text(viewer.getName()))
-				.append(Component.text(testSuffix(targetFeatures)))
-				.append(Component.text(PUBLIC_MESSAGE_DELIMITER))
-				.append(message)
-				.build()
-		);
+		sender.sendMessage(createMessageComponent(
+				Component.text(PRIVATE_MESSAGE_PREFIX + createViewerOrientedSender(targetFeatures, viewer)),
+							Component.text(PUBLIC_MESSAGE_DELIMITER),
+							message,
+							NamedTextColor.GRAY,
+							TextDecoration.ITALIC
+		));
 	}
 
 	public static void sendMessages(Map<MessageUtils.EnabledFeatures, List<Player>> viewers, Player sender, Component message) {
@@ -114,50 +105,57 @@ public class MessageUtils {
 				.sendMessage(createMessageComponent(MessageUtils.EnabledFeatures.NONE, sender, message));
 	}
 
-	private static Component createMessageComponent(EnabledFeatures targetFeatures, Player sender, Component originalMessage) {
-		return createMessageComponent(
-				targetFeatures,
-				sender,
-				originalMessage,
-				PUBLIC_MESSAGE_DELIMITER,
-				false,
-				TextDecoration.BOLD,
-				false,
-				NamedTextColor.WHITE
-		);
+	public static Component createMessageComponent(EnabledFeatures targetFeatures, Player sender, Component originalMessage) {
+		return createMessageComponent(targetFeatures, sender, originalMessage, PUBLIC_MESSAGE_DELIMITER, null, null);
 	}
 
-	private static Component createMessageComponent(
+	public static Component createMessageComponent(
 			EnabledFeatures targetFeatures,
 			Player sender,
 			Component originalMessage,
 			String delimiter,
-			boolean includeDecoration,
-			TextDecoration decorationType,
-			boolean includeColor,
-			NamedTextColor colorType) {
-		return Component.text()
-				.color(includeColor ? colorType : NamedTextColor.WHITE)                // conditional color assignment
-				.decoration(decorationType, includeDecoration)                         // conditional decoration assignment
-				.content(testPrefix(targetFeatures))
-				.append(Component.text(sender.getName()))                              // append sender name
-				.append(Component.text(testSuffix(targetFeatures)))
-				.append(Component.text(delimiter))                                     // append delimiter
-				.append(originalMessage)                                               // append message
-				.build();                                                              // build component
+			@Nullable TextDecoration decorationType,
+			@Nullable NamedTextColor colorType) {
+	return createMessageComponent(
+					createViewerOrientedSender(targetFeatures, sender),
+					Component.text(delimiter),
+					originalMessage,
+					colorType,
+					decorationType
+			);
 	}
 
-	private static String testPrefix(EnabledFeatures enabledFeatures) {
+	public static Component createMessageComponent(
+			Component firstPart,
+			Component delimiter,
+			Component secondPart,
+			@Nullable NamedTextColor color,
+			@Nullable TextDecoration decoration
+	) {
+		return Component.text()
+				.color(color)
+				.decoration(decoration != null ? decoration : TextDecoration.ITALIC, decoration != null)
+				.append(firstPart)
+				.append(delimiter)
+				.append(secondPart)
+				.build();
+	}
+
+	public static String testPrefix(EnabledFeatures enabledFeatures) {
 		if (enabledFeatures == EnabledFeatures.PREFIX_AND_SUFFIX || enabledFeatures == EnabledFeatures.PREFIX)
 			return PARSED_PREFIX_PLACEHOLDER;
 
 		return Utils.EMPTY_STRING;
 	}
 
-	private static String testSuffix(EnabledFeatures enabledFeatures) {
+	public static String testSuffix(EnabledFeatures enabledFeatures) {
 		if (enabledFeatures == EnabledFeatures.PREFIX_AND_SUFFIX || enabledFeatures == EnabledFeatures.SUFFIX)
 			return PARSED_SUFFIX_PLACEHOLDER;
 
 		return Utils.EMPTY_STRING;
+	}
+
+	public static Component createViewerOrientedSender(EnabledFeatures viewerFeatures, Player sender) {
+		return Component.text(testPrefix(viewerFeatures) + sender.getName() + testSuffix(viewerFeatures));
 	}
 }
