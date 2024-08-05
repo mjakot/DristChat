@@ -1,23 +1,27 @@
 package dristmine.dristchat;
 
-import dristmine.dristchat.messages.MessageListener;
-import dristmine.dristchat.messages.PrivateMessageListener;
-import dristmine.dristchat.utils.ConfigManager;
+import dristmine.dristchat.listeners.*;
+import dristmine.dristchat.utils.AudienceUtils;
+import dristmine.dristchat.utils.config.ConfigManager;
 import dristmine.dristchat.utils.Utils;
 
-import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DristChat extends JavaPlugin {
+	private static ConfigManager config;
 
 	@Override
 	public void onEnable() {
+		AudienceUtils.setup(this);
 		ConfigManager.setup(this);
 
+		config = ConfigManager.getInstance();
+
 		try {
-			LuckPerms luckPerms = LuckPermsProvider.get();
+			//noinspection ResultOfMethodCallIgnored
+			LuckPermsProvider.get();
 		}
 		catch (IllegalStateException e) {
 			getLogger().severe("DristChat error: LuckPerms not found! Disabling plugin.");
@@ -27,11 +31,11 @@ public class DristChat extends JavaPlugin {
 			return;
 		}
 
-		getServer().getPluginManager().registerEvents(new MessageListener(), this);
-		getServer().getPluginManager().registerEvents(new PrivateMessageListener(), this);
-		getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+		getServer().getPluginManager().registerEvents(new OnPublicMessage(), this);
+		getServer().getPluginManager().registerEvents(new OnPrivateMessage(), this);
 		getServer().getPluginManager().registerEvents(new OnDeath(), this);
 		getServer().getPluginManager().registerEvents(new OnAdvancementDone(), this);
+		getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
 
 		getLogger().info(Utils.EMPTY_STRING);
 		getLogger().info("  + ----------+ ");
@@ -51,5 +55,9 @@ public class DristChat extends JavaPlugin {
 		getLogger().info("             \\|");
 		getLogger().info("       DristChat");
 		getLogger().info(Utils.EMPTY_STRING);
+	}
+
+	public static ConfigManager config() {
+		return config;
 	}
 }

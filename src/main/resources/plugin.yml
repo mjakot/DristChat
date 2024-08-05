@@ -3,5 +3,5 @@ version: '${version}'
 main: dristmine.dristchat.DristChat
 api-version: '1.20'
 author: Mjakot
-description: Paper plugin for toggleable chat supporting player prefixes, notifications and more!
+description: Toggleable bukkit chat plugin for dristmine mc server
 website: https://github.com/mjakot/DristChat

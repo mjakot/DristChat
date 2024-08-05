@@ -1,5 +1,7 @@
-package dristmine.dristchat.utils;
+package dristmine.dristchat.utils.config;
 
+import dristmine.dristchat.DristChat;
+import dristmine.dristchat.utils.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,7 +17,7 @@ public class ConfigManager {
 		configuration = plugin.getConfig();
 	}
 
-	public static void setup(JavaPlugin plugin) {
+	public static void setup(DristChat plugin) {
 		DristChatInstance = plugin;
 		plugin.saveDefaultConfig();
 	}
@@ -58,5 +60,12 @@ public class ConfigManager {
 	}
 	public final double getFloatingPoint(ConfigKeys key) {
 		return getFloatingPoint(key.getKey());
+	}
+
+	public int getInteger(String key) {
+		return (int) getFloatingPoint(key);
+	}
+	public int getInteger(ConfigKeys key) {
+		return (int) getFloatingPoint(key);
 	}
 }
