@@ -3,6 +3,7 @@ package dristmine.dristchat.listeners;
 import dristmine.dristchat.utils.*;
 import dristmine.dristchat.utils.component.ComponentUtils;
 import dristmine.dristchat.utils.enums.ChatDecorations;
+import dristmine.dristchat.utils.enums.SoundTypes;
 import net.kyori.adventure.audience.Audience;
 
 import net.kyori.adventure.text.Component;
@@ -39,12 +40,12 @@ public class OnPlayerJoin implements Listener {
 
 		List<Player> joinMessageEnabledPlayers = AudienceUtils.sortPlayersByChatFeature(Bukkit.getOnlinePlayers(), PLAYER_JOIN_MESSAGES);
 
-		joinMessageEnabledPlayers.remove(sender);
+		SoundTypes soundToPlay;
 
 		if (!sender.hasPlayedBefore()) {
 			Audience.audience(joinMessageEnabledPlayers).sendMessage(ComponentUtils.createPlayerFirstJoinMessage(sender));
 
-			SoundUtils.playSound(Audience.audience(joinMessageEnabledPlayers), PLAYER_FIRST_JOINED_RECEIVED);
+			soundToPlay = PLAYER_FIRST_JOINED_RECEIVED;
 		}
 		else {
 			Map<ChatDecorations, List<Player>> playersToChatDecorations = AudienceUtils.mapPlayersToChatDecorations(joinMessageEnabledPlayers);
@@ -55,8 +56,12 @@ public class OnPlayerJoin implements Listener {
 				AudienceUtils.sendMessageIfCategoryExists(playersToChatDecorations, decoration, joinMessage);
 			}
 
-			SoundUtils.playSound(Audience.audience(joinMessageEnabledPlayers), PLAYER_JOIN_RECEIVED);
+			soundToPlay = PLAYER_JOIN_RECEIVED;
 		}
+
+		joinMessageEnabledPlayers.remove(sender);
+
+		SoundUtils.playSound(Audience.audience(joinMessageEnabledPlayers), soundToPlay);
 
 		event.joinMessage(null);
 	}
