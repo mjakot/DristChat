@@ -1,15 +1,17 @@
 package dristmine.dristchat.utils.component;
 
-import dristmine.dristchat.utils.component.ComponentTemplate;
+import dristmine.dristchat.utils.config.ConfigKeys;
 import dristmine.dristchat.utils.enums.ChatDecorations;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import org.bukkit.entity.Player;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class ComponentUtils {
 				.sender(sender.getName())
 				.senderPrefix(testPrefix(viewersChatDecorations, sender))
 				.senderSuffix(testSuffix(viewersChatDecorations, sender))
-				.message(PlainTextComponentSerializer.plainText().serialize(message))
+				.message(message)
 				.build(null, NamedTextColor.WHITE);
 	}
 
@@ -46,7 +48,7 @@ public class ComponentUtils {
 				.receiver(receiver.getName())
 				.receiverPrefix(testPrefix(viewerChatDecorations, receiver))
 				.receiverSuffix(testSuffix(viewerChatDecorations, receiver))
-				.message(PlainTextComponentSerializer.plainText().serialize(message))
+				.message(message)
 				.build(TextDecoration.ITALIC, NamedTextColor.DARK_GRAY);
 	}
 
@@ -81,45 +83,15 @@ public class ComponentUtils {
 	}
 
 	public static @NotNull List<Component> createPlayerJoinTitleAnimation() {
-		List<String> frames = config().getStringList(TITLE_ON_JOIN, HEADER);
-		List<Component> result = new ArrayList<>(frames.size());
-
-		for (String message : frames) {
-			result.add(
-					ComponentTemplate.template(message)
-							.build(null, null)
-			);
-		}
-
-		return result;
+		return createAnimationComponents(TITLE_ON_JOIN, HEADER, null, null);
 	}
 
 	public static @NotNull List<Component> createPlayerJoinSubtitleAnimation() {
-		List<String> frames = config().getStringList(TITLE_ON_JOIN, FOOTER);
-		List<Component> result = new ArrayList<>(frames.size());
-
-		for (String message : frames) {
-			result.add(
-					ComponentTemplate.template(message)
-							.build(null, null)
-			);
-		}
-
-		return result;
+		return createAnimationComponents(TITLE_ON_JOIN, FOOTER, null, null);
 	}
 
 	public static @NotNull List<Component> createPlayerJoinActionbarAnimation() {
-		List<String> frames = config().getStringList(ACTIONBAR_ON_JOIN, MESSAGE);
-		List<Component> result = new ArrayList<>(frames.size());
-
-		for (String message : frames) {
-			result.add(
-					ComponentTemplate.template(message)
-							.build(TextDecoration.UNDERLINED, NamedTextColor.GOLD)
-			);
-		}
-
-		return result;
+		return createAnimationComponents(ACTIONBAR_ON_JOIN, MESSAGE, TextDecoration.UNDERLINED, NamedTextColor.GOLD);
 	}
 
 	public static @NotNull Component createAdvancementMessage(
@@ -136,5 +108,24 @@ public class ComponentUtils {
 		return ComponentTemplate.template(config().getString(DEATHS, MESSAGE))
 				.message(message)
 				.build(TextDecoration.BOLD, NamedTextColor.RED);
+	}
+
+	private static @NotNull List<Component> createAnimationComponents(
+			@NotNull ConfigKeys section,
+			@NotNull ConfigKeys key,
+			@Nullable TextDecoration decoration,
+			@Nullable TextColor color
+	) {
+		List<String> frames = config().getStringList(section, key);
+		List<Component> result = new ArrayList<>(frames.size());
+
+		for (String message : frames) {
+			result.add(
+					ComponentTemplate.template(message)
+							.build(decoration, color)
+			);
+		}
+
+		return result;
 	}
 }

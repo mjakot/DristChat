@@ -39,8 +39,7 @@ public class ComponentTemplate {
 	private @Nullable String receiver;
 	private @Nullable String receiverPrefix;
 	private @Nullable String receiverSuffix;
-	private @Nullable String message;
-	private @Nullable Component componentMessage;
+	private @Nullable Component message;
 
 	private ComponentTemplate(
 			@NotNull String component,
@@ -50,7 +49,7 @@ public class ComponentTemplate {
 		    @Nullable String receiver,
 			@Nullable String receiverPrefix,
 		    @Nullable String receiverSuffix,
-		    @Nullable String message
+			@Nullable Component message
 	) {
 		this.component = component;
 		this.sender = sender;
@@ -60,7 +59,6 @@ public class ComponentTemplate {
 		this.receiverPrefix = receiverPrefix;
 		this.receiverSuffix = receiverSuffix;
 		this.message = message;
-		this.componentMessage = null;
 	}
 
 	public static @NotNull ComponentTemplate template(@NotNull String templateString) {
@@ -70,7 +68,7 @@ public class ComponentTemplate {
 		@Nullable String receiver = null;
 		@Nullable String receiverPrefix = null;
 		@Nullable String receiverSuffix = null;
-		@Nullable String message = null;
+		@Nullable Component message = null;
 
 		if (templateString.contains(Placeholders.SENDER_PLACEHOLDER.getPlaceholder())) {
 			sender = Utils.EMPTY_STRING;
@@ -99,7 +97,7 @@ public class ComponentTemplate {
 		}
 
 		if (templateString.contains(Placeholders.MESSAGE_PLACEHOLDER.getPlaceholder()))
-			message = Utils.EMPTY_STRING;
+			message = Component.empty();
 
 		return new ComponentTemplate(
 				templateString,
@@ -137,58 +135,32 @@ public class ComponentTemplate {
 		return assignIfNotNull(newValue -> this.receiverSuffix = newValue, receiverSuffix);
 	}
 
-	public @NotNull ComponentTemplate message(@Nullable String message) {
+	public @NotNull ComponentTemplate message(@Nullable Component message) {
 		return assignIfNotNull(newValue -> this.message = newValue, message);
 	}
 
-	public @NotNull ComponentTemplate message(@Nullable Component message) {
-		this.componentMessage = message;
-
-		return this;
-	}
-
 	public @NotNull Component build(@Nullable TextDecoration decoration, @Nullable TextColor color) {
-		if (Utils.isNull(componentMessage))
-			return buildWithStringMessage(decoration, color);
+		Component result = Component.text()
+							.decoration(Utils.isNull(decoration) ? TextDecoration.BOLD : decoration, Utils.isNotNull(decoration))
+							.color(color)
+							.append(LegacyComponentSerializer.legacyAmpersand().deserialize(
+									component.replace(Placeholders.SENDER_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(sender))
+										.replace(Placeholders.RECEIVER_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(receiver))
+										.replace(Placeholders.MESSAGE_PLACEHOLDER.getPlaceholder(), Utils.EMPTY_STRING)
+										.replaceFirst(Placeholders.PREFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(senderPrefix))
+										.replace(Placeholders.PREFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(receiverPrefix))
+										.replaceFirst(Placeholders.SUFFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(senderSuffix))
+										.replace(Placeholders.SUFFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(receiverSuffix))
+							))
+							.build();
 
-		return buildWithComponentMessage(decoration, color);
+		if (Utils.isNotNull(message))
+			result = result.append(message);
+
+		return result;
 	}
 
-	private @NotNull Component buildWithStringMessage(@Nullable TextDecoration decoration, @Nullable TextColor color) {
-		return Component.text()
-				.decoration(Utils.isNull(decoration) ? TextDecoration.BOLD : decoration, Utils.isNotNull(decoration))
-				.color(color)
-				.append(LegacyComponentSerializer.legacyAmpersand().deserialize(
-						component.replace(Placeholders.SENDER_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(sender))
-								.replace(Placeholders.RECEIVER_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(receiver))
-								.replace(Placeholders.MESSAGE_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(message))
-								.replaceFirst(Placeholders.PREFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(senderPrefix))
-								.replace(Placeholders.PREFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(receiverPrefix))
-								.replaceFirst(Placeholders.SUFFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(senderSuffix))
-								.replace(Placeholders.SUFFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(receiverSuffix))
-				))
-				.build();
-	}
-
-	@SuppressWarnings("ConstantConditions")
-	private @NotNull Component buildWithComponentMessage(@Nullable TextDecoration decoration, @Nullable TextColor color) {
-		return Component.text()
-				.decoration(Utils.isNull(decoration) ? TextDecoration.BOLD : decoration, Utils.isNotNull(decoration))
-				.color(color)
-				.append(LegacyComponentSerializer.legacySection().deserialize(
-						component.replace(Placeholders.SENDER_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(sender))
-								.replace(Placeholders.RECEIVER_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(receiver))
-								.replace(Placeholders.MESSAGE_PLACEHOLDER.getPlaceholder(), Utils.EMPTY_STRING)
-								.replaceFirst(Placeholders.PREFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(senderPrefix))
-								.replace(Placeholders.PREFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(receiverPrefix))
-								.replaceFirst(Placeholders.SUFFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(senderSuffix))
-								.replace(Placeholders.SUFFIX_PLACEHOLDER.getPlaceholder(), Utils.ensureStringNotNull(receiverSuffix))
-				))
-				.append(componentMessage)
-				.build();
-	}
-
-	private @NotNull ComponentTemplate assignIfNotNull(@Nullable Consumer<String> assigner, @Nullable String assignee) {
+	private @NotNull <T> ComponentTemplate assignIfNotNull(@Nullable Consumer<T> assigner, @Nullable T assignee) {
 		if (Utils.isNull(assigner))
 			return this;
 
