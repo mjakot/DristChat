@@ -1,49 +1,68 @@
-# DristChat config
+# DristChat
 
-permission_global: "dchat.feature.messages" # checked before displaying any message
-permission_global_prefix: "dchat.feature.prefix" # checked before displaying DM+ prefixes
-permission_global_suffix: "dchat.feature.suffix" # checked before displaying DM+ suffixes
-permission_global_sound: "dchat.feature.sound" # sound on global messages
-global_message_sound: "UI_BUTTON_CLICK" # global messages sound
-global_sound_volume: 2.0 # global messages sound volume
-global_sound_pitch: 1.0 # global messages sound pitch
-global_animation_offset: 12 #global offset before animation
-global_animation_delay: 10 # global offset between frames
-global_prefix_placeholder: "%dc_prefix_parsed%"
-global_suffix_placeholder: "%dc_suffix_parsed%"
+# color -> Color for the component
+#          Uses RRGGBB format
+#          Use "null" to indicate absence of color
 
-message_format:
+# decoration -> Decoration for the component
+#               Supported decorations: { "OBFUSCATED", "BOLD", "STRIKETHROUGH", "UNDERLINED", "ITALIC" }
+#               Use "null" to indicate absence of decoration
+
+# sound -> Sound for the component
+#          Supports paper and mc sound format
+
+# message -> Message for the component
+#            Supported placeholders: { "%prefix%, "%suffix%", "%sender%", "%receiver%", "%message%" }
+#            Plugin will attempt to parse the message string and create component from it
+#            Whatever is not substituted as placeholder is treated as the message itself
+
+# permission -> Permission for the component
+#               Checked before sending component to Player, thus can be used as a switch for features
+
+permission_global: "dchat.feature.messages" #_____ Permission for switching global chat messages
+permission_global_prefix: "dchat.feature.prefix" # Permission for switching prefixes in all parts of chat
+permission_global_suffix: "dchat.feature.suffix" # Permission for switching suffixes in all parts of chat
+permission_global_sound: "dchat.feature.sound" #__ Permission for switching sound on global chat messages
+global_message_sound: "UI_BUTTON_CLICK" #_________ Sound for the global chat messages
+global_sound_volume: 2.0 #________________________ Volume for all the sounds played though this plugin
+global_sound_pitch: 1.0 #_________________________ Pitch for all the sounds played though this plugin
+global_animation_offset: 12 #_____________________ Global offset before any animation begins
+global_animation_delay: 10 #______________________ Global offset between frames of any animation
+global_prefix_placeholder: "%dc_prefix_parsed%" #_ Global placeholder for prefix
+global_suffix_placeholder: "%dc_suffix_parsed%" #_ Global placeholder for suffix
+
+message_format: #_________________________________ Global messages
   message: "%prefix%%sender%%suffix%: %message%"
   color: "ffffff"
   decoration: "null"
 # permission for translation - dchat.translation.<language>
 
-private_messages:
+private_messages: #_______________________________ Private messages
   message: "(%prefix%%sender%%suffix% -> %prefix%%receiver%%suffix%): %message%"
   color: "555555"
   decoration: "ITALIC"
   sound: "ENTITY_CHICKEN_EGG"
 
-player_first_joined:
+player_first_joined: #____________________________ Send to players when player first joined
   message: "[++] %sender% has joined the game for the first time!"
   sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
   color: "00aa00"
   decoration: "BOLD"
   permission: "dchat.feature.joinleave"
-player_joined:
+player_joined: #__________________________________ Send to players when player joined
   message: "[+] %prefix%%sender%%%suffix%"
   sound: "UI_BUTTON_CLICK"
   color: "ffff55"
   decoration: "BOLD"
   permission: "dchat.feature.joinleave"
-player_left:
+player_left: #____________________________________ Send to players when player quit
   message: "[-] %prefix%%sender%%%suffix%"
   sound: "UI_BUTTON_CLICK"
   color: "ffff55"
   decoration: "BOLD"
   permission: "dchat.feature.joinleave"
 
-title_on_join:
+title_on_join: #__________________________________ Title to show player on join
   header: # supports animation
     - "&2W&aelcome!"
     - "&aW&2e&alcome!"
@@ -58,23 +77,23 @@ title_on_join:
   color: "null"
   decoration: "null"
   permission: "dchat.feature.title"
-actionbar_on_join:
+actionbar_on_join: #______________________________ Actionbar to show player on join
   message: # supports animation
     - "Welcome to DristMine!"
   color: "ffaa00"
   decoration: "UNDERLINED"
   permission: "dchat.feature.actionbar"
-sound_on_join:
+sound_on_join: #__________________________________ Sound to play for player on join
   sound: "ENTITY_PLAYER_LEVELUP"
   permission: "dchat.feature.joinsound"
 
-advancements:
+advancements: #___________________________________ Message for when advancement achieved
   message: "%message%"
   color: "55ff55"
   decoration: "BOLD"
   permission: "dchat.feature.advancements"
 
-deaths:
+deaths: #_________________________________________ Message for when a Player dies
   message: "%message%"
   color: "ff5555"
   decoration: "BOLD"
