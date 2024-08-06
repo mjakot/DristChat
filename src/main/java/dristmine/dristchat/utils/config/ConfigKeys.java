@@ -27,6 +27,8 @@ public class ConfigKeys {
 	public static final ConfigKeys PERMISSION;
 	public static final ConfigKeys HEADER;
 	public static final ConfigKeys FOOTER;
+	public static final ConfigKeys COLOR;
+	public static final ConfigKeys DECORATION;
 	public static final ConfigKeys GLOBAL_PERMISSION;
 	public static final ConfigKeys GLOBAL_PERMISSION_PREFIX;
 	public static final ConfigKeys GLOBAL_PERMISSION_SUFFIX;
@@ -55,6 +57,8 @@ public class ConfigKeys {
 		PERMISSION = new ConfigKeys("permission");
 		HEADER = new ConfigKeys("header");
 		FOOTER = new ConfigKeys("footer");
+		COLOR = new ConfigKeys("color");
+		DECORATION = new ConfigKeys("decoration");
 		GLOBAL_PERMISSION = new ConfigKeys("permission_global");
 		GLOBAL_PERMISSION_PREFIX = new ConfigKeys("permission_global_prefix");
 		GLOBAL_PERMISSION_SUFFIX = new ConfigKeys("permission_global_suffix");
@@ -66,16 +70,16 @@ public class ConfigKeys {
 		GLOBAL_ANIMATION_DELAY = new ConfigKeys("global_animation_delay");
 		GLOBAL_PREFIX_PLACEHOLDER = new ConfigKeys("global_prefix_placeholder");
 		GLOBAL_SUFFIX_PLACEHOLDER = new ConfigKeys("global_suffix_placeholder");
-		MESSAGE_FORMAT = new ConfigKeys("message_format", new ConfigKeys[] { ConfigKeys.MESSAGE });
-		PRIVATE_MESSAGE = new ConfigKeys("private_messages", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND });
-		PLAYER_FIRST_JOINED = new ConfigKeys("player_first_joined", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND, ConfigKeys.PERMISSION });
-		PLAYER_JOINED = new ConfigKeys("player_joined", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND, ConfigKeys.PERMISSION });
-		PLAYER_LEFT = new ConfigKeys("player_left", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND, ConfigKeys.PERMISSION });
-		TITLE_ON_JOIN = new ConfigKeys("title_on_join", new ConfigKeys[] { ConfigKeys.HEADER, ConfigKeys.FOOTER, ConfigKeys.PERMISSION });
-		ACTIONBAR_ON_JOIN = new ConfigKeys("actionbar_on_join", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.PERMISSION });
+		MESSAGE_FORMAT = new ConfigKeys("message_format", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.COLOR, ConfigKeys.DECORATION });
+		PRIVATE_MESSAGE = new ConfigKeys("private_messages", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND, ConfigKeys.COLOR, ConfigKeys.DECORATION });
+		PLAYER_FIRST_JOINED = new ConfigKeys("player_first_joined", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND, ConfigKeys.PERMISSION, ConfigKeys.COLOR, ConfigKeys.DECORATION });
+		PLAYER_JOINED = new ConfigKeys("player_joined", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND, ConfigKeys.PERMISSION, ConfigKeys.COLOR, ConfigKeys.DECORATION });
+		PLAYER_LEFT = new ConfigKeys("player_left", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.SOUND, ConfigKeys.PERMISSION, ConfigKeys.COLOR, ConfigKeys.DECORATION });
+		TITLE_ON_JOIN = new ConfigKeys("title_on_join", new ConfigKeys[] { ConfigKeys.HEADER, ConfigKeys.FOOTER, ConfigKeys.PERMISSION, ConfigKeys.COLOR, ConfigKeys.DECORATION });
+		ACTIONBAR_ON_JOIN = new ConfigKeys("actionbar_on_join", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.PERMISSION, ConfigKeys.COLOR, ConfigKeys.DECORATION });
 		SOUND_ON_JOIN = new ConfigKeys("sound_on_join", new ConfigKeys[] { ConfigKeys.SOUND, ConfigKeys.PERMISSION });
-		ADVANCEMENTS = new ConfigKeys("advancements", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.PERMISSION });
-		DEATHS = new ConfigKeys("deaths", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.PERMISSION });
+		ADVANCEMENTS = new ConfigKeys("advancements", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.PERMISSION, ConfigKeys.COLOR, ConfigKeys.DECORATION });
+		DEATHS = new ConfigKeys("deaths", new ConfigKeys[] { ConfigKeys.MESSAGE, ConfigKeys.PERMISSION, ConfigKeys.COLOR, ConfigKeys.DECORATION });
 	}
 
 	public String getKey() {

@@ -15,6 +15,7 @@ import static dristmine.dristchat.utils.config.ConfigKeys.*;
 import static dristmine.dristchat.utils.enums.ChatDecorations.*;
 
 public class Utils {
+	public final static String NULL_PLACEHOLDER = "null";
 	public final static String COMMAND_ARGS_DELIMITER = " ";
 	public static final String PAPER_SOUND_DELIMITER = "_";
 	public static final String MINECRAFT_SOUND_DELIMITER = ".";
@@ -27,6 +28,7 @@ public class Utils {
 	public final static int MESSAGE_INDEX = 2;
 	public final static int TICKS_IN_SECOND = 20;
 	public final static int MILLIS_IN_SECOND = 1000;
+	public final static int HEX_RADIX = 16;
 	public final static String[] PRIVATE_MESSAGE_COMMANDS = { "msg", "tell" };
 
 	public static boolean isFeatureEnabled(Player player, ConfigKeys feature) {

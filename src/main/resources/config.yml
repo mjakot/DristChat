@@ -14,23 +14,33 @@ global_suffix_placeholder: "%dc_suffix_parsed%"
 
 message_format:
   message: "%prefix%%sender%%suffix%: %message%"
+  color: "ffffff"
+  decoration: "null"
 # permission for translation - dchat.translation.<language>
 
 private_messages:
   message: "(%prefix%%sender%%suffix% -> %prefix%%receiver%%suffix%): %message%"
+  color: "555555"
+  decoration: "ITALIC"
   sound: "ENTITY_CHICKEN_EGG"
 
 player_first_joined:
   message: "[++] %sender% has joined the game for the first time!"
   sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+  color: "00aa00"
+  decoration: "BOLD"
   permission: "dchat.feature.joinleave"
 player_joined:
   message: "[+] %prefix%%sender%%%suffix%"
   sound: "UI_BUTTON_CLICK"
+  color: "ffff55"
+  decoration: "BOLD"
   permission: "dchat.feature.joinleave"
 player_left:
   message: "[-] %prefix%%sender%%%suffix%"
   sound: "UI_BUTTON_CLICK"
+  color: "ffff55"
+  decoration: "BOLD"
   permission: "dchat.feature.joinleave"
 
 title_on_join:
@@ -45,10 +55,14 @@ title_on_join:
     - "&aWelcome&2!"
   footer: # supports animation
     - "DristMine classic"
+  color: "null"
+  decoration: "null"
   permission: "dchat.feature.title"
 actionbar_on_join:
   message: # supports animation
     - "Welcome to DristMine!"
+  color: "ffaa00"
+  decoration: "UNDERLINED"
   permission: "dchat.feature.actionbar"
 sound_on_join:
   sound: "ENTITY_PLAYER_LEVELUP"
@@ -56,8 +70,12 @@ sound_on_join:
 
 advancements:
   message: "%message%"
+  color: "55ff55"
+  decoration: "BOLD"
   permission: "dchat.feature.advancements"
 
 deaths:
   message: "%message%"
+  color: "ff5555"
+  decoration: "BOLD"
   permission: "dchat.feature.deaths"

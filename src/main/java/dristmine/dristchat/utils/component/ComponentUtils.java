@@ -27,12 +27,17 @@ public class ComponentUtils {
 			@NotNull Player sender,
 			@NotNull Component message
 	) {
-		return ComponentTemplate.template(config().getString(MESSAGE_FORMAT, MESSAGE))
+		ConfigKeys section = MESSAGE_FORMAT;
+
+		return ComponentTemplate.template(config().getString(section, MESSAGE))
 				.sender(sender.getName())
 				.senderPrefix(testPrefix(viewersChatDecorations, sender))
 				.senderSuffix(testSuffix(viewersChatDecorations, sender))
 				.message(message)
-				.build(null, NamedTextColor.WHITE);
+				.build(
+						config().getTextDecoration(section),
+						config().getTextColor(section)
+				);
 	}
 
 	public static @NotNull Component createPrivateMessage(
@@ -41,7 +46,9 @@ public class ComponentUtils {
 			@NotNull Player receiver,
 			@NotNull Component message
 	) {
-		return ComponentTemplate.template(config().getString(PRIVATE_MESSAGE, MESSAGE))
+		ConfigKeys section = PRIVATE_MESSAGE;
+
+		return ComponentTemplate.template(config().getString(section, MESSAGE))
 				.sender(sender.getName())
 				.senderPrefix(testPrefix(viewerChatDecorations, sender))
 				.senderSuffix(testSuffix(viewerChatDecorations, sender))
@@ -49,65 +56,114 @@ public class ComponentUtils {
 				.receiverPrefix(testPrefix(viewerChatDecorations, receiver))
 				.receiverSuffix(testSuffix(viewerChatDecorations, receiver))
 				.message(message)
-				.build(TextDecoration.ITALIC, NamedTextColor.DARK_GRAY);
+				.build(
+						config().getTextDecoration(section),
+						config().getTextColor(section)
+				);
 	}
 
 	public static @NotNull Component createPlayerFirstJoinMessage(
 			@NotNull Player sender
 	) {
-		return ComponentTemplate.template(config().getString(PLAYER_FIRST_JOINED, MESSAGE))
+		ConfigKeys section = PLAYER_FIRST_JOINED;
+
+		return ComponentTemplate.template(config().getString(section, MESSAGE))
 				.sender(sender.getName())
-				.build(TextDecoration.BOLD, NamedTextColor.DARK_GREEN);
+				.build(
+						config().getTextDecoration(section),
+						config().getTextColor(section)
+				);
 	}
 
 	public static @NotNull Component createPlayerJoinMessage(
 			@NotNull ChatDecorations viewersChatDecorations,
 			@NotNull Player sender
 	) {
-		return ComponentTemplate.template(config().getString(PLAYER_JOINED, MESSAGE))
+		ConfigKeys section = PLAYER_JOINED;
+
+		return ComponentTemplate.template(config().getString(section, MESSAGE))
 				.sender(sender.getName())
 				.senderPrefix(testPrefix(viewersChatDecorations, sender))
 				.senderSuffix(testSuffix(viewersChatDecorations, sender))
-				.build(TextDecoration.BOLD, NamedTextColor.YELLOW);
+				.build(
+						config().getTextDecoration(section),
+						config().getTextColor(section)
+				);
 	}
 
 	public static @NotNull Component createPlayerLeftMessage(
 			@NotNull ChatDecorations viewersChatDecorations,
 			@NotNull Player sender
 	) {
-		return ComponentTemplate.template(config().getString(PLAYER_LEFT, MESSAGE))
+		ConfigKeys section = PLAYER_LEFT;
+
+		return ComponentTemplate.template(config().getString(section, MESSAGE))
 				.sender(sender.getName())
 				.senderPrefix(testPrefix(viewersChatDecorations, sender))
 				.senderSuffix(testSuffix(viewersChatDecorations, sender))
-				.build(TextDecoration.BOLD, NamedTextColor.YELLOW);
+				.build(
+						config().getTextDecoration(section),
+						config().getTextColor(section)
+				);
 	}
 
 	public static @NotNull List<Component> createPlayerJoinTitleAnimation() {
-		return createAnimationComponents(TITLE_ON_JOIN, HEADER, null, null);
+		ConfigKeys section = TITLE_ON_JOIN;
+
+		return createAnimationComponents(
+				section,
+				HEADER,
+				config().getTextDecoration(section),
+				config().getTextColor(section)
+		);
 	}
 
 	public static @NotNull List<Component> createPlayerJoinSubtitleAnimation() {
-		return createAnimationComponents(TITLE_ON_JOIN, FOOTER, null, null);
+		ConfigKeys section = TITLE_ON_JOIN;
+
+		return createAnimationComponents(
+				section,
+				FOOTER,
+				config().getTextDecoration(section),
+				config().getTextColor(section)
+		);
 	}
 
 	public static @NotNull List<Component> createPlayerJoinActionbarAnimation() {
-		return createAnimationComponents(ACTIONBAR_ON_JOIN, MESSAGE, TextDecoration.UNDERLINED, NamedTextColor.GOLD);
+		ConfigKeys key = ACTIONBAR_ON_JOIN;
+
+		return createAnimationComponents(
+				key,
+				MESSAGE,
+				config().getTextDecoration(key),
+				config().getTextColor(key)
+		);
 	}
 
 	public static @NotNull Component createAdvancementMessage(
 			@NotNull Component message
 	) {
-		return ComponentTemplate.template(config().getString(ADVANCEMENTS, MESSAGE))
+		ConfigKeys section = ADVANCEMENTS;
+
+		return ComponentTemplate.template(config().getString(section, MESSAGE))
 				.message(message)
-				.build(TextDecoration.BOLD, NamedTextColor.GREEN);
+				.build(
+						config().getTextDecoration(section),
+						config().getTextColor(section)
+				);
 	}
 
 	public static @NotNull Component createDeathMessage(
 			@NotNull Component message
 	) {
-		return ComponentTemplate.template(config().getString(DEATHS, MESSAGE))
+		ConfigKeys section = DEATHS;
+
+		return ComponentTemplate.template(config().getString(section, MESSAGE))
 				.message(message)
-				.build(TextDecoration.BOLD, NamedTextColor.RED);
+				.build(
+						config().getTextDecoration(section),
+						config().getTextColor(section)
+				);
 	}
 
 	private static @NotNull List<Component> createAnimationComponents(
