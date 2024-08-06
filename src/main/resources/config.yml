@@ -15,6 +15,7 @@
 #            Supported placeholders: { "%prefix%, "%suffix%", "%sender%", "%receiver%", "%message%" }
 #            Plugin will attempt to parse the message string and create component from it
 #            Whatever is not substituted as placeholder is treated as the message itself
+#            It is not advised to change any of the message templates provided by this config file without editing ComponentUtils class
 
 # permission -> Permission for the component
 #               Checked before sending component to Player, thus can be used as a switch for features
